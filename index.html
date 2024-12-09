@@ -148,16 +148,6 @@
         goProxy()
       }
     })
-
-    // 自动加载当前URL的代理页面（如果直接访问 /proxy/<URL>)
-    window.onload = () => {
-      const pathSegments = window.location.pathname.split('/')
-      if (pathSegments[1] === 'proxy' && pathSegments[2]) {
-        const encodedUrl = pathSegments.slice(2).join('/')
-        const decodedUrl = decodeURIComponent(encodedUrl)
-        document.getElementById('url-input').value = decodedUrl
-      }
-    }
   </script>
 </body>
 </html>
