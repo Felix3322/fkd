@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Cloudflare 反向代理浏览器</title>
+  <title>Google 反向代理</title>
   <style>
     body {
       margin: 0;
@@ -13,78 +13,24 @@
       background-color: #2c3e50;
       color: white;
       padding: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .top-bar h1 {
-      margin: 0;
-      font-size: 1.2em;
-    }
-    .top-bar form {
-      display: flex;
-      align-items: center;
-    }
-    .top-bar input[type="text"] {
-      padding: 5px;
-      font-size: 1em;
-      margin-right: 10px;
-      width: 300px;
-    }
-    .top-bar button {
-      padding: 5px 10px;
-      font-size: 1em;
-      cursor: pointer;
+      text-align: center;
     }
     .content-area {
       padding: 10px;
     }
     iframe {
       width: 100%;
-      height: 80vh; /* 高度为视口高度的80% */
+      height: 90vh; /* 高度为视口高度的90% */
       border: none;
     }
   </style>
 </head>
 <body>
   <div class="top-bar">
-    <h1>反向代理浏览器</h1>
-    <form id="proxy-form">
-      <input type="text" id="url-input" placeholder="输入要访问的网站，例如：www.example.com" required>
-      <button type="submit">访问</button>
-    </form>
+    <h1>Google 反向代理页面</h1>
   </div>
   <div class="content-area">
-    <iframe id="proxy-frame" src=""></iframe>
+    <iframe id="proxy-frame" src="/"></iframe>
   </div>
-
-  <script>
-    document.getElementById('proxy-form').addEventListener('submit', function(event) {
-      event.preventDefault();
-      const urlInput = document.getElementById('url-input').value.trim();
-      if (!urlInput) {
-        alert('请输入要访问的域名');
-        return;
-      }
-
-      // 处理输入，去除协议头（如果有）
-      let domain = urlInput;
-      try {
-        const parsedUrl = new URL(urlInput.startsWith('http') ? urlInput : `https://${urlInput}`);
-        domain = parsedUrl.hostname;
-      } catch (e) {
-        alert('请输入有效的域名');
-        return;
-      }
-
-      // 设置 iframe 的 src 为通过 Worker 代理的 URL
-      const workerDomain = 'https://your-worker-subdomain.workers.dev'; // 替换为你的 Worker 域名
-      const proxyUrl = `${workerDomain}/proxy/${domain}`;
-      document.getElementById('proxy-frame').src = proxyUrl;
-    });
-
-    // 确保所有在 iframe 中打开的新链接仍通过代理
-    // 由于跨域限制，无法直接在 iframe 内部注入脚本，因此需要依赖 Worker 端的 HTML 重写
-  </script>
 </body>
 </html>
