@@ -67,9 +67,10 @@
       align-items: center;
       justify-content: center;
     }
-    .input-area button img {
+    .input-area button svg {
       width: 20px;
       height: 20px;
+      fill: #fff;
     }
     .footer-text {
       margin-top: 20px;
@@ -91,7 +92,7 @@
       .input-area input {
         font-size: 0.9em;
       }
-      .input-area button img {
+      .input-area button svg {
         width: 16px;
         height: 16px;
       }
@@ -106,8 +107,7 @@
     <div class="input-area">
       <input type="text" id="url-input" placeholder="输入要访问的域名，例如：www.google.com" />
       <button onclick="goProxy()" title="访问">
-        <!-- 回车图标 SVG -->
-        <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 24 24" fill="#fff">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
           <path d="M10 17l5-5-5-5v10z"/>
           <path d="M0 24V0h24v24H0z" fill="none"/>
         </svg>
