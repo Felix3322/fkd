@@ -14,7 +14,9 @@
       height: 100vh;
       justify-content: center;
       align-items: center;
+      overflow: hidden;
     }
+
     .container {
       background-color: white;
       padding: 40px;
@@ -23,20 +25,30 @@
       text-align: center;
       max-width: 400px;
       width: 90%;
+      position: relative;
+      z-index: 10;
     }
+
     h1 {
       margin-bottom: 20px;
       color: #333;
     }
-    .qq-group {
+
+    .qq-group, .tg-group {
       margin-bottom: 10px;
       color: #555;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
     }
+
     .color-text {
       margin-bottom: 20px;
       font-weight: bold;
       animation: colorChange 5s infinite;
     }
+
     @keyframes colorChange {
       0% { color: #e74c3c; }
       25% { color: #f1c40f; }
@@ -44,6 +56,7 @@
       75% { color: #3498db; }
       100% { color: #e74c3c; }
     }
+
     .input-area {
       display: flex;
       align-items: center;
@@ -51,6 +64,7 @@
       border-radius: 5px;
       overflow: hidden;
     }
+
     .input-area input {
       flex: 1;
       padding: 10px;
@@ -58,6 +72,7 @@
       outline: none;
       font-size: 1em;
     }
+
     .input-area button {
       background-color: #4CAF50;
       border: none;
@@ -67,17 +82,20 @@
       align-items: center;
       justify-content: center;
     }
+
     .input-area button svg {
       width: 20px;
       height: 20px;
       fill: #fff;
     }
+
     .footer-text {
       margin-top: 20px;
       font-size: 0.9em;
       color: #888;
       animation: textColorChange 5s infinite;
     }
+
     @keyframes textColorChange {
       0% { color: #e74c3c; }
       25% { color: #f1c40f; }
@@ -85,6 +103,7 @@
       75% { color: #3498db; }
       100% { color: #e74c3c; }
     }
+
     @media (max-width: 500px) {
       .container {
         padding: 20px;
@@ -97,12 +116,86 @@
         height: 16px;
       }
     }
+
+    /* 弹窗样式 */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .modal {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 300px;
+      text-align: center;
+    }
+
+    .modal p {
+      margin-bottom: 20px;
+      font-size: 0.9em;
+      line-height: 1.4;
+      color: #333;
+    }
+
+    .modal button {
+      background: #4CAF50;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .icon-link {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      text-decoration: none;
+      color: #333;
+      font-size: 0.9em;
+    }
+
+    .icon-link img {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+    }
+
+    .extra-note {
+      font-size: 0.8em;
+      margin-top: 10px;
+      color: #888;
+      line-height: 1.4;
+      max-width: 400px;
+      margin: 0 auto;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>防空洞专用代理</h1>
-    <div class="qq-group">最新QQ群：1007418110</div>
+    <div class="qq-group">
+      <a class="icon-link" href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&noverify=0&group_code=1007418110" target="_blank">
+        <img src="https://static-00.iconduck.com/assets.00/qq-icon-256x256-gyghvfu1.png" alt="QQ Icon" />
+        QQ群：1007418110
+      </a>
+    </div>
+    <div class="tg-group">
+      <a class="icon-link" href="https://t.me/+qrFhk0Okw8QzYjhh" target="_blank">
+        <img src="https://image.similarpng.com/very-thumbnail/2021/10/Telegram-icon-on-transparent-background-PNG.png" alt="TG Icon" />
+        TG群组
+      </a>
+    </div>
     <div class="color-text">技术无价，请勿封杀</div>
     <div class="input-area">
       <input type="text" id="url-input" placeholder="输入要访问的域名，例如：www.google.com" />
@@ -114,6 +207,17 @@
       </button>
     </div>
     <div class="footer-text">技术无价，请勿封杀</div>
+    <div class="extra-note">
+      由于我只是一个初中生，我没钱，如果以后网站流量大了，免费套餐可能不够用，如有意愿欢迎tg群联系我捐款
+    </div>
+  </div>
+
+  <!-- 弹窗 -->
+  <div class="modal-overlay" id="modal-overlay" style="display: none;">
+    <div class="modal">
+      <p>本软件仅用于保护隐私，不得用于非法用途！<br>请勿在收GFW保护的地区使用，请遵守中华人民共和国法律，可以永久关闭。</p>
+      <button id="close-modal">我已了解</button>
+    </div>
   </div>
 
   <script>
@@ -147,6 +251,20 @@
         event.preventDefault()
         goProxy()
       }
+    })
+
+    // 弹窗逻辑
+    const modalOverlay = document.getElementById('modal-overlay')
+    const closeModalBtn = document.getElementById('close-modal')
+
+    // 检查localStorage，如果没有关闭记录则显示弹窗
+    if (!localStorage.getItem('modalClosed')) {
+      modalOverlay.style.display = 'flex'
+    }
+
+    closeModalBtn.addEventListener('click', function() {
+      localStorage.setItem('modalClosed', 'true')
+      modalOverlay.style.display = 'none'
     })
   </script>
 </body>
