@@ -153,6 +153,7 @@
       padding: 10px;
       cursor: pointer;
       border-radius: 5px;
+      margin: 5px;
     }
 
     .icon-link {
@@ -178,6 +179,15 @@
       max-width: 400px;
       margin: 0 auto;
       text-align: center;
+    }
+
+    .modal input[type="checkbox"] {
+      margin-right: 5px;
+    }
+
+    .btn-disabled {
+      background: #aaa !important;
+      cursor: not-allowed !important;
     }
   </style>
 </head>
@@ -212,11 +222,8 @@
     </div>
   </div>
 
-  <!-- 弹窗 -->
   <div class="modal-overlay" id="modal-overlay" style="display: none;">
-    <div class="modal">
-      <p>本软件仅用于保护隐私，不得用于非法用途！<br>请勿在收GFW保护的地区使用，请遵守中华人民共和国法律，可以永久关闭。</p>
-      <button id="close-modal">我已了解</button>
+    <div class="modal" id="modal-content">
     </div>
   </div>
 
@@ -224,7 +231,6 @@
     function getProxyUrl(inputUrl) {
       try {
         let url = inputUrl.trim()
-        // 如果没有协议，默认加上https://
         if (!/^https?:\/\//i.test(url)) {
           url = 'https://' + url
         }
@@ -245,7 +251,6 @@
       }
     }
 
-    // 允许按回车键提交
     document.getElementById('url-input').addEventListener('keydown', function(event) {
       if (event.key === 'Enter') {
         event.preventDefault()
@@ -253,19 +258,73 @@
       }
     })
 
-    // 弹窗逻辑
     const modalOverlay = document.getElementById('modal-overlay')
-    const closeModalBtn = document.getElementById('close-modal')
+    const modalContent = document.getElementById('modal-content')
 
-    // 检查localStorage，如果没有关闭记录则显示弹窗
-    if (!localStorage.getItem('modalClosed')) {
-      modalOverlay.style.display = 'flex'
+    if (localStorage.getItem('modalClosedForever') === 'true') {
+      // 已永久关闭弹窗，直接返回
+    } else {
+      // 利用第三方API获取IP所在国家
+      fetch('https://ipapi.co/json')
+      .then(r => r.json())
+      .then(data => {
+        const country = data.country_code || 'UNKNOWN'
+        showModal(country)
+      })
+      .catch(e => {
+        // 无法获取IP信息，默认正常提示
+        showModal('UNKNOWN')
+      })
     }
 
-    closeModalBtn.addEventListener('click', function() {
-      localStorage.setItem('modalClosed', 'true')
-      modalOverlay.style.display = 'none'
-    })
+    function showModal(country) {
+      modalOverlay.style.display = 'flex'
+      if (country === 'CN') {
+        modalContent.innerHTML = `
+          <p>检测到您的IP来自中华人民共和国境内，该工具无法使用</p>
+          <button id="btn-i-am-abroad" class="btn-disabled" disabled>我在境外</button>
+          <button id="btn-close-cn" class="btn-disabled" disabled>关闭</button>
+        `
+        setTimeout(() => {
+          document.getElementById('btn-i-am-abroad').classList.remove('btn-disabled')
+          document.getElementById('btn-i-am-abroad').disabled = false
+          document.getElementById('btn-close-cn').classList.remove('btn-disabled')
+          document.getElementById('btn-close-cn').disabled = false
+        }, 3000)
+
+        document.getElementById('btn-i-am-abroad').addEventListener('click', function() {
+          showNormalModal()
+        })
+        document.getElementById('btn-close-cn').addEventListener('click', function() {
+          window.location.href = 'https://www.baidu.com'
+        })
+      } else {
+        showNormalModal()
+      }
+    }
+
+    function showNormalModal() {
+      modalContent.innerHTML = `
+        <p>本软件仅用于保护隐私，不得用于非法用途！<br>请勿在收GFW保护的地区使用，请遵守中华人民共和国法律，可以永久关闭。</p>
+        <label style="display: block; margin-bottom:10px;">
+          <input type="checkbox" id="permanent-close"> 永久关闭此提示
+        </label>
+        <button id="btn-understood" class="btn-disabled" disabled>我已了解</button>
+      `
+      setTimeout(() => {
+        const btnUnderstood = document.getElementById('btn-understood')
+        btnUnderstood.classList.remove('btn-disabled')
+        btnUnderstood.disabled = false
+      }, 3000)
+
+      document.getElementById('btn-understood').addEventListener('click', function() {
+        const permClose = document.getElementById('permanent-close')
+        if (permClose.checked) {
+          localStorage.setItem('modalClosedForever', 'true')
+        }
+        modalOverlay.style.display = 'none'
+      })
+    }
   </script>
 </body>
 </html>
