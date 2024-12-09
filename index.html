@@ -1,13 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>防空洞PornHub代理</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proxy via Worker</title>
 </head>
 <body>
-    <h1>防空洞专用PornHub代理</h1>
-    <p>防空洞最新 QQ 群号：1007418110</p>
-    <iframe src="/proxy"></iframe>
+  <h1>Proxy via Cloudflare Worker</h1>
+  
+  <label for="url-input">Enter domain to visit:</label>
+  <input type="text" id="url-input" placeholder="e.g., example.com">
+  <button onclick="submitRequest()">Go</button>
+
+  <p>Or click the link below to visit a site:</p>
+  <a href="https://example.com" class="proxy-link">Visit Example.com</a>
+  
+  <iframe id="proxy-frame" style="width: 100%; height: 500px; border: none;"></iframe>
+
+  <script>
+    // 提交输入的 URL 进行代理
+    function submitRequest() {
+      const url = document.getElementById('url-input').value.trim();
+      if (url) {
+        const proxyUrl = `https://your-worker-domain.com/proxy/${url}`;
+        const iframe = document.getElementById('proxy-frame');
+        iframe.src = proxyUrl;
+      }
+    }
+
+    // 处理超链接点击事件，始终通过代理访问
+    document.querySelectorAll('.proxy-link').forEach(link => {
+      link.addEventListener('click', function(event) {
+        event.preventDefault();
+        const url = new URL(link.href);
+        const proxyUrl = `https://your-worker-domain.com/proxy/${url.hostname}`;
+        const iframe = document.getElementById('proxy-frame');
+        iframe.src = proxyUrl;
+      });
+    });
+  </script>
 </body>
 </html>
