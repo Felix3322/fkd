@@ -3,34 +3,127 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Google 反向代理</title>
+  <title>全能反向代理</title>
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f4;
     }
-    .top-bar {
-      background-color: #2c3e50;
+    .header {
+      background-color: #4CAF50;
       color: white;
-      padding: 10px;
+      padding: 15px;
       text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    .content-area {
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 70px);
+    }
+    .input-area {
+      padding: 20px;
+      background-color: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .input-area input {
+      width: 60%;
       padding: 10px;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .input-area button {
+      padding: 10px 20px;
+      margin-left: 10px;
+      font-size: 1em;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .input-area button:hover {
+      background-color: #45a049;
+    }
+    .iframe-container {
+      flex: 1;
+      padding: 10px;
+      background-color: #eaeaea;
     }
     iframe {
       width: 100%;
-      height: 90vh; /* 高度为视口高度的90% */
+      height: 100%;
       border: none;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    @media (max-width: 768px) {
+      .input-area input {
+        width: 50%;
+      }
+      .input-area button {
+        padding: 10px;
+        margin-left: 5px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="top-bar">
-    <h1>Google 反向代理页面</h1>
+  <div class="header">
+    <h1>全能反向代理</h1>
   </div>
-  <div class="content-area">
-    <iframe id="proxy-frame" src="/"></iframe>
+  <div class="container">
+    <div class="input-area">
+      <input type="text" id="url-input" placeholder="输入要访问的网址，例如：https://www.example.com" />
+      <button onclick="goProxy()">访问</button>
+    </div>
+    <div class="iframe-container">
+      <iframe id="proxy-frame" src=""></iframe>
+    </div>
   </div>
+
+  <script>
+    function getProxyUrl(inputUrl) {
+      try {
+        let url = inputUrl.trim()
+        // 如果没有协议，默认加上https://
+        if (!/^https?:\/\//i.test(url)) {
+          url = 'https://' + url
+        }
+        const encodedUrl = encodeURIComponent(url)
+        return `/proxy/${encodedUrl}`
+      } catch (e) {
+        return ''
+      }
+    }
+
+    function goProxy() {
+      const input = document.getElementById('url-input').value
+      const iframe = document.getElementById('proxy-frame')
+      const proxyUrl = getProxyUrl(input)
+      if (proxyUrl) {
+        iframe.src = proxyUrl
+      } else {
+        alert('请输入有效的网址')
+      }
+    }
+
+    // 自动加载当前URL的代理页面（如果直接访问 /proxy/<URL>)
+    window.onload = () => {
+      const pathSegments = window.location.pathname.split('/')
+      if (pathSegments[1] === 'proxy' && pathSegments[2]) {
+        const encodedUrl = pathSegments.slice(2).join('/')
+        const decodedUrl = decodeURIComponent(encodedUrl)
+        document.getElementById('proxy-frame').src = `/proxy/${encodedUrl}`
+        document.getElementById('url-input').value = decodedUrl
+      }
+    }
+  </script>
 </body>
 </html>
