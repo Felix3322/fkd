@@ -3,41 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Proxy via Worker</title>
+  <title>Proxied Browser</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+    }
+    .top-bar {
+      background: #333;
+      color: #fff;
+      padding: 10px;
+    }
+    .content-area {
+      padding: 10px;
+    }
+    iframe {
+      width: 100%;
+      height: 80vh; /* 不全屏，顶部留有区域 */
+      border: none;
+    }
+  </style>
 </head>
 <body>
-  <h1>Proxy via Cloudflare Worker</h1>
-  
-  <label for="url-input">Enter domain to visit:</label>
-  <input type="text" id="url-input" placeholder="e.g., example.com">
-  <button onclick="submitRequest()">Go</button>
-
-  <p>Or click the link below to visit a site:</p>
-  <a href="https://example.com" class="proxy-link">Visit Example.com</a>
-  
-  <iframe id="proxy-frame" style="width: 100%; height: 500px; border: none;"></iframe>
+  <div class="top-bar">
+    <h1>我的代理浏览器</h1>
+    <input type="text" id="url-input" placeholder="example.com" />
+    <button onclick="go()">Go</button>
+  </div>
+  <div class="content-area">
+    <p>这里可以显示一些提示信息或功能按钮。</p>
+    <iframe id="proxy-frame"></iframe>
+  </div>
 
   <script>
-    // 提交输入的 URL 进行代理
-    function submitRequest() {
+    function go() {
       const url = document.getElementById('url-input').value.trim();
-      if (url) {
-        const proxyUrl = `https://your-worker-domain.com/proxy/${url}`;
-        const iframe = document.getElementById('proxy-frame');
-        iframe.src = proxyUrl;
-      }
+      if(!url) return;
+      const iframe = document.getElementById('proxy-frame');
+      iframe.src = `https://your-worker-domain.com/proxy/${url}`;
     }
-
-    // 处理超链接点击事件，始终通过代理访问
-    document.querySelectorAll('.proxy-link').forEach(link => {
-      link.addEventListener('click', function(event) {
-        event.preventDefault();
-        const url = new URL(link.href);
-        const proxyUrl = `https://your-worker-domain.com/proxy/${url.hostname}`;
-        const iframe = document.getElementById('proxy-frame');
-        iframe.src = proxyUrl;
-      });
-    });
   </script>
 </body>
 </html>
