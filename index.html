@@ -9,10 +9,12 @@
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f0f2f5;
-      height: 100vh;
       display: flex;
       flex-direction: column;
+      height: 100vh;
+      justify-content: center;
       align-items: center;
+      overflow: hidden;
     }
 
     /* 顶部横栏样式 */
@@ -162,7 +164,7 @@
       display: none;
       justify-content: center;
       align-items: center;
-      z-index: 1000;
+      z-index: 100;
     }
 
     .modal {
@@ -170,17 +172,12 @@
       padding: 20px;
       border-radius: 8px;
       max-width: 300px;
-      text-align: left;
+      text-align: center;
       position: relative;
     }
 
-    .modal h2 {
-      margin-top: 0;
-      font-size: 1em;
-      margin-bottom: 10px;
-    }
-
-    .modal p, .modal ul {
+    .modal p {
+      margin-bottom: 20px;
       font-size: 0.9em;
       line-height: 1.4;
       color: #333;
@@ -190,24 +187,19 @@
       background: #4CAF50;
       color: #fff;
       border: none;
-      padding: 5px 10px;
+      padding: 10px;
       cursor: pointer;
       border-radius: 5px;
-      margin-top: 10px;
-      margin-right: 5px;
-      font-size: 0.8em;
+      margin: 5px;
     }
 
-    .modal .close-btn {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      background: #aaa;
-      border: none;
-      padding: 3px 6px;
-      cursor: pointer;
-      color: #fff;
-      border-radius: 3px;
+    .icon-link {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      text-decoration: none;
+      color: #333;
+      font-size: 0.9em;
     }
 
     .icon-link img {
@@ -249,14 +241,6 @@
       border-radius: 5px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-    .modal input[type="text"] {
-      width: 100%;
-      margin-bottom: 10px;
-    }
-
-    .modal ul {
-      padding-left: 20px;
-    }
 
     /* 滚动横幅红色强调 */
     .login-warning {
@@ -266,32 +250,26 @@
   </style>
 </head>
 <body>
-  <div class="top-bar">
-    <marquee>防空洞免费代理 请不要使用该代理<span class="login-warning">登录</span>网站！（否则代理站可能被chrome或者edge浏览器识别为钓鱼网站）</marquee>
-    <button id="cookie-manager-btn">Cookie管理</button>
-    <button id="bookmark-manager-btn">书签管理</button>
-  </div>
-
   <div class="container">
     <div class="logo-links">
-      <a class="icon-link" href="/proxy/https%3A%2F%2Fcn.pornhub.com" target="_blank">
+      <a class="icon-link" href="/proxy/${encodeURIComponent('https://cn.pornhub.com')}" target="_blank">
         <img src="https://play-lh.googleusercontent.com/nX_X7VLuovWewAE9iJysyQ2XtZlq55ijTulOLquOxN1K0Ihx93F4p8COzJuihWV2H5Y" alt="Pornhub Logo" />
         一键直达 Pornhub
       </a>
-      <a class="icon-link" href="/proxy/https%3A%2F%2Fzh.xhamster.com" target="_blank">
+      <a class="icon-link" href="/proxy/${encodeURIComponent('https://zh.xhamster.com')}" target="_blank">
         <img src="https://is4-ssl.mzstatic.com/image/thumb/Purple122/v4/e2/22/48/e2224825-e0a8-7d2f-571f-f4ae139e3992/source/256x256bb.jpg" alt="xHamster Logo" />
         一键直达 xHamster 
       </a>
     </div>
     <h1>防空洞专用代理</h1>
     <div class="qq-group">
-      <a class="icon-link" href="/proxy/http%3A%2F%2Fqm.qq.com%2Fcgi-bin%2Fqm%2Fqr%3F_wv%3D1027%26noverify%3D0%26group_code%3D1007418110" target="_blank">
+      <a class="icon-link" href="/proxy/${encodeURIComponent('http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&noverify=0&group_code=1007418110')}" target="_blank">
         <img src="https://static-00.iconduck.com/assets.00/qq-icon-256x256-gyghvfu1.png" alt="QQ Icon" />
         QQ群：1007418110
       </a>
     </div>
     <div class="tg-group">
-      <a class="icon-link" href="/proxy/https%3A%2F%2Ft.me%2F%2BqrFhk0Okw8QzYjhh" target="_blank">
+      <a class="icon-link" href="/proxy/${encodeURIComponent('https://t.me/+qrFhk0Okw8QzYjhh')}" target="_blank">
         <img src="https://image.similarpng.com/very-thumbnail/2021/10/Telegram-icon-on-transparent-background-PNG.png" alt="TG Icon" />
         TG群组
       </a>
@@ -308,7 +286,7 @@
     </div>
     <div class="footer-text">技术无罪，请勿封杀</div>
     <div class="extra-note">
-      <p><strong>站长邮箱：</strong><a href="mailto:admin.obanarchy.org">admin.obanarchy.org</a></p>
+      <p><strong>站长邮箱：</strong><a href="mailto:admin@obanarchy.org">admin@obanarchy.org</a></p>
       <p>由于我只是一个初中生，我没钱，如果以后网站流量大了，免费套餐可能不够用，如有意愿欢迎联系我捐款❤️。</p>
     </div>
   </div>
@@ -316,10 +294,13 @@
   <!-- Cookie管理 Modal -->
   <div class="modal-overlay" id="cookie-modal-overlay">
     <div class="modal">
-      <button class="close-btn" id="close-cookie">X</button>
+      <button id="close-cookie" style="position:absolute;top:5px;right:5px;background:#aaa;border:none;padding:3px 6px;cursor:pointer;color:#fff;border-radius:3px;">X</button>
       <h2>Cookie管理</h2>
-      <p>当前站点的Cookies：</p>
+      <p>当前Cookies：</p>
       <ul id="cookie-list"></ul>
+      <input type="text" id="new-cookie-name" placeholder="cookie名" style="width:100%;margin-bottom:5px;"/>
+      <input type="text" id="new-cookie-value" placeholder="cookie值" style="width:100%;margin-bottom:5px;"/>
+      <button id="add-cookie-btn" style="margin-right:5px;">添加Cookie</button>
       <button id="refresh-cookie">刷新Cookie列表</button>
     </div>
   </div>
@@ -327,211 +308,281 @@
   <!-- 书签管理 Modal -->
   <div class="modal-overlay" id="bookmark-modal-overlay">
     <div class="modal">
-      <button class="close-btn" id="close-bookmark">X</button>
+      <button id="close-bookmark" style="position:absolute;top:5px;right:5px;background:#aaa;border:none;padding:3px 6px;cursor:pointer;color:#fff;border-radius:3px;">X</button>
       <h2>书签管理</h2>
-      <p>添加当前页面书签：<br><input type="text" id="bookmark-name" placeholder="书签名称" /><br><button id="add-bookmark">添加书签</button></p>
+      <p>添加书签：<br><input type="text" id="bookmark-name" placeholder="书签名称" style="width:100%;margin-bottom:5px;"/><button id="add-bookmark">添加书签</button></p>
       <p>已有书签：</p>
       <ul id="bookmark-list"></ul>
       <button id="refresh-bookmark">刷新书签列表</button>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="modal-overlay" style="display: none;">
-    <div class="modal" id="modal-content">
+      <hr>
+      <p>同步测试：<button id="sync-data-btn">同步到后端</button></p>
     </div>
   </div>
 
   <script>
-    function getProxyUrl(inputUrl) {
-      try {
-        let url = inputUrl.trim()
-        if (!/^https?:\/\//i.test(url)) {
-          url = 'https://' + url
+    (function(){
+      // 本地存储cookie数组：["name=value","foo=bar"]
+      function getLocalCookies(){
+        let c = localStorage.getItem('proxyCookies')
+        if(!c) return []
+        try {
+          return JSON.parse(c)
+        } catch(e){
+          return []
         }
-        const encodedUrl = encodeURIComponent(url)
-        return '/proxy/' + encodedUrl
-      } catch (e) {
-        return ''
       }
-    }
-
-    function goProxy() {
-      const input = document.getElementById('url-input').value
-      const proxyUrl = getProxyUrl(input)
-      if (proxyUrl) {
-        window.location.href = proxyUrl
-      } else {
-        alert('请输入有效的网址')
+      function setLocalCookies(cookies){
+        localStorage.setItem('proxyCookies', JSON.stringify(cookies))
       }
-    }
 
-    document.getElementById('url-input').addEventListener('keydown', function(event) {
-      if (event.key === 'Enter') {
-        event.preventDefault()
-        goProxy()
-      }
-    })
-
-    const cookieModal = document.getElementById('cookie-modal-overlay')
-    const bookmarkModal = document.getElementById('bookmark-modal-overlay')
-
-    document.getElementById('cookie-manager-btn').addEventListener('click', () => {
-      showCookieModal()
-    })
-
-    document.getElementById('bookmark-manager-btn').addEventListener('click', () => {
-      showBookmarkModal()
-    })
-
-    document.getElementById('close-cookie').addEventListener('click', () => {
-      cookieModal.style.display = 'none'
-    })
-
-    document.getElementById('close-bookmark').addEventListener('click', () => {
-      bookmarkModal.style.display = 'none'
-    })
-
-    // Cookie管理逻辑
-    function showCookieModal() {
-      cookieModal.style.display = 'flex'
-      refreshCookieList()
-    }
-
-    function refreshCookieList() {
-      const cookieList = document.getElementById('cookie-list')
-      cookieList.innerHTML = ''
-      const cookies = document.cookie.split(';')
-      cookies.forEach(c => {
-        const li = document.createElement('li')
-        li.textContent = c.trim()
-        cookieList.appendChild(li)
-      })
-    }
-
-    document.getElementById('refresh-cookie').addEventListener('click', refreshCookieList)
-
-    // 书签管理逻辑
-    function showBookmarkModal() {
-      bookmarkModal.style.display = 'flex'
-      refreshBookmarkList()
-    }
-
-    function getBookmarks() {
-      let bookmarks = localStorage.getItem('bookmarks')
-      if (!bookmarks) {
-        bookmarks = '[]'
-      }
-      return JSON.parse(bookmarks)
-    }
-
-    function setBookmarks(bm) {
-      localStorage.setItem('bookmarks', JSON.stringify(bm))
-    }
-
-    function refreshBookmarkList() {
-      const bookmarkList = document.getElementById('bookmark-list')
-      bookmarkList.innerHTML = ''
-      const bm = getBookmarks()
-      bm.forEach((b, index) => {
-        const li = document.createElement('li')
-        li.innerHTML = `${b.name}: <a href="${b.url}" target="_blank">${b.url}</a> <button data-idx="${index}" class="del-bm">删除</button>`
-        bookmarkList.appendChild(li)
-      })
-
-      bookmarkList.querySelectorAll('.del-bm').forEach(btn => {
-        btn.addEventListener('click', function() {
-          const idx = parseInt(this.getAttribute('data-idx'))
-          const bm = getBookmarks()
-          bm.splice(idx, 1)
-          setBookmarks(bm)
-          refreshBookmarkList()
-        })
-      })
-    }
-
-    document.getElementById('refresh-bookmark').addEventListener('click', refreshBookmarkList)
-
-    document.getElementById('add-bookmark').addEventListener('click', () => {
-      const name = document.getElementById('bookmark-name').value.trim()
-      if (!name) {
-        alert('请输入书签名称')
-        return
-      }
-      const url = window.location.href
-      const bm = getBookmarks()
-      bm.push({ name, url })
-      setBookmarks(bm)
-      refreshBookmarkList()
-      document.getElementById('bookmark-name').value = ''
-      alert('书签已添加')
-    })
-
-    // 弹窗（IP国家检测）
-    const modalOverlay = document.getElementById('modal-overlay')
-    const modalContent = document.getElementById('modal-content')
-
-    if (localStorage.getItem('modalClosedForever') === 'true') {
-      // 已永久关闭弹窗，直接返回
-    } else {
-      fetch('https://ipapi.co/json')
-      .then(r => r.json())
-      .then(data => {
-        const country = data.country_code || 'UNKNOWN'
-        showModal(country)
-      })
-      .catch(e => {
-        showModal('UNKNOWN')
-      })
-    }
-
-    function showModal(country) {
-      modalOverlay.style.display = 'flex'
-      if (country === 'CN') {
-        modalContent.innerHTML = `
-          <p>检测到您的IP来自中华人民共和国境内，该工具无法使用</p>
-          <button id="btn-i-am-abroad" class="btn-disabled" disabled>我在境外</button>
-          <button id="btn-close-cn" class="btn-disabled" disabled>关闭</button>
-        `
-        setTimeout(() => {
-          document.getElementById('btn-i-am-abroad').classList.remove('btn-disabled')
-          document.getElementById('btn-i-am-abroad').disabled = false
-          document.getElementById('btn-close-cn').classList.remove('btn-disabled')
-          document.getElementById('btn-close-cn').disabled = false
-        }, 3000)
-
-        document.getElementById('btn-i-am-abroad').addEventListener('click', function() {
-          showNormalModal()
-        })
-        document.getElementById('btn-close-cn').addEventListener('click', function() {
-          window.location.href = 'https://www.baidu.com'
-        })
-      } else {
-        showNormalModal()
-      }
-    }
-
-    function showNormalModal() {
-      modalContent.innerHTML = `
-        <p>本软件仅用于保护隐私，不得用于非法用途！<br>请勿在受GFW保护的地区使用，请遵守中华人民共和国法律。</p>
-        <label style="display: block; margin-bottom:10px;">
-          <input type="checkbox" id="permanent-close"> 永久关闭此提示
-        </label>
-        <button id="btn-understood" class="btn-disabled" disabled>我已了解</button>
-      `
-      setTimeout(() => {
-        const btnUnderstood = document.getElementById('btn-understood')
-        btnUnderstood.classList.remove('btn-disabled')
-        btnUnderstood.disabled = false
-      }, 3000)
-
-      document.getElementById('btn-understood').addEventListener('click', function() {
-        const permClose = document.getElementById('permanent-close')
-        if (permClose.checked) {
-          localStorage.setItem('modalClosedForever', 'true')
+      // 本地存储书签：[{name:"xxx",url:"xxx"},...]
+      function getBookmarks(){
+        let bm = localStorage.getItem('bookmarks')
+        if(!bm) bm = '[]'
+        try {
+          return JSON.parse(bm)
+        } catch(e){
+          return []
         }
-        modalOverlay.style.display = 'none'
-      })
-    }
+      }
+      function setBookmarks(bm){
+        localStorage.setItem('bookmarks', JSON.stringify(bm))
+      }
+
+      // Cookie管理逻辑
+      async function refreshCookieList() {
+        const cookieList = document.getElementById('cookie-list')
+        cookieList.innerHTML = ''
+        const cookies = getLocalCookies()
+        cookies.forEach((c, idx) => {
+          const li = document.createElement('li')
+          li.innerHTML = \`\${c} <button data-idx="\${idx}" class="del-cookie" style="font-size:0.8em;">删除</button>\`
+          cookieList.appendChild(li)
+        })
+
+        // 绑定删除按钮事件
+        cookieList.querySelectorAll('.del-cookie').forEach(btn => {
+          btn.addEventListener('click', function(){
+            const idx = parseInt(this.getAttribute('data-idx'))
+            const cookies = getLocalCookies()
+            cookies.splice(idx, 1)
+            setLocalCookies(cookies)
+            refreshCookieList()
+          })
+        })
+      }
+
+      function addCookie(name, value){
+        const cookies = getLocalCookies()
+        const cookieMap = {}
+        cookies.forEach(c => {
+          const eq = c.indexOf('=')
+          if(eq > -1){
+            const cname = c.substring(0, eq).trim()
+            cookieMap[cname] = c
+          }
+        })
+        cookieMap[name] = \`\${name}=\${value}\`
+        setLocalCookies(Object.values(cookieMap))
+        refreshCookieList()
+      }
+
+      // 书签管理逻辑
+      function refreshBookmarkList(){
+        const bookmarkList = document.getElementById('bookmark-list')
+        bookmarkList.innerHTML = ''
+        const bm = getBookmarks()
+        bm.forEach((b, idx) => {
+          const li = document.createElement('li')
+          li.innerHTML = \`\${b.name}: <a href="\${b.url}" target="_blank">\${b.url}</a> <button data-idx="\${idx}" class="del-bm" style="font-size:0.8em;">删除</button>\`
+          bookmarkList.appendChild(li)
+        })
+
+        // 绑定删除按钮事件
+        bookmarkList.querySelectorAll('.del-bm').forEach(btn => {
+          btn.addEventListener('click', function(){
+            const idx = parseInt(this.getAttribute('data-idx'))
+            const bm = getBookmarks()
+            bm.splice(idx, 1)
+            setBookmarks(bm)
+            refreshBookmarkList()
+          })
+        })
+      }
+
+      function addBookmark(name, url){
+        const bm = getBookmarks()
+        bm.push({ name, url })
+        setBookmarks(bm)
+        refreshBookmarkList()
+      }
+
+      // 同步数据到后端
+      async function syncData(){
+        const data = {
+          cookies: getLocalCookies(),
+          bookmarks: getBookmarks()
+        }
+        try {
+          const resp = await fetch('/proxy/sync', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          })
+          const result = await resp.json()
+          alert('同步结果: ' + JSON.stringify(result))
+        } catch (e) {
+          alert('同步失败')
+        }
+      }
+
+      // 前后端通信
+      async function fetchPage(proxyUrl) {
+        const cookies = getLocalCookies()
+        const headers = {}
+        if (cookies.length > 0) {
+          headers['X-Client-Cookies'] = encodeURIComponent(JSON.stringify(cookies))
+        }
+
+        try {
+          const resp = await fetch(proxyUrl, { headers })
+          // 若有X-Set-Cookies头，更新本地cookie
+          const setCookiesHeader = resp.headers.get('X-Set-Cookies')
+          if(setCookiesHeader){
+            const newCookies = JSON.parse(decodeURIComponent(setCookiesHeader))
+            setLocalCookies(newCookies)
+          }
+          const text = await resp.text()
+          document.documentElement.innerHTML = text
+          // 由于重新写入document会丢失事件，需要重新绑定事件
+          rebindEvents()
+        } catch (e) {
+          alert('无法加载目标页面')
+        }
+      }
+
+      function getProxyUrl(inputUrl) {
+        try {
+          let url = inputUrl.trim()
+          if (!/^https?:\/\//i.test(url)) {
+            url = 'https://' + url
+          }
+          const encodedUrl = encodeURIComponent(url)
+          return '/proxy/' + encodedUrl
+        } catch (e) {
+          return ''
+        }
+      }
+
+      function goProxy() {
+        const input = document.getElementById('url-input')?.value
+        if(!input) return
+        const proxyUrl = getProxyUrl(input)
+        if (proxyUrl) {
+          fetchPage(proxyUrl)
+        } else {
+          alert('请输入有效的网址')
+        }
+      }
+
+      // 显示Cookie Modal
+      function showCookieModal(){
+        document.getElementById('cookie-modal-overlay').style.display = 'flex'
+        refreshCookieList()
+      }
+
+      // 显示书签 Modal
+      function showBookmarkModal(){
+        document.getElementById('bookmark-modal-overlay').style.display = 'flex'
+        refreshBookmarkList()
+      }
+
+      // 绑定顶栏按钮事件
+      function bindTopBarEvents(){
+        const cb = document.getElementById('cookie-manager-btn')
+        if(cb){
+          cb.addEventListener('click', showCookieModal)
+        }
+
+        const bb = document.getElementById('bookmark-manager-btn')
+        if(bb){
+          bb.addEventListener('click', showBookmarkModal)
+        }
+      }
+
+      // 绑定Modal中的按钮事件
+      function bindModalEvents(){
+        // Cookie Modal
+        const closeCookieBtn = document.getElementById('close-cookie')
+        if(closeCookieBtn){
+          closeCookieBtn.addEventListener('click', () => {
+            document.getElementById('cookie-modal-overlay').style.display = 'none'
+          })
+        }
+
+        const addCookieBtn = document.getElementById('add-cookie-btn')
+        if(addCookieBtn){
+          addCookieBtn.addEventListener('click', () => {
+            const name = document.getElementById('new-cookie-name').value.trim()
+            const value = document.getElementById('new-cookie-value').value.trim()
+            if(name && value){
+              addCookie(name, value)
+              document.getElementById('new-cookie-name').value = ''
+              document.getElementById('new-cookie-value').value = ''
+            } else {
+              alert('请输入cookie名与值')
+            }
+          })
+        }
+
+        const refreshCookieBtn = document.getElementById('refresh-cookie')
+        if(refreshCookieBtn){
+          refreshCookieBtn.addEventListener('click', refreshCookieList)
+        }
+
+        // 书签 Modal
+        const closeBookmarkBtn = document.getElementById('close-bookmark')
+        if(closeBookmarkBtn){
+          closeBookmarkBtn.addEventListener('click', () => {
+            document.getElementById('bookmark-modal-overlay').style.display = 'none'
+          })
+        }
+
+        const addBookmarkBtn = document.getElementById('add-bookmark')
+        if(addBookmarkBtn){
+          addBookmarkBtn.addEventListener('click', () => {
+            const name = document.getElementById('bookmark-name').value.trim()
+            if(!name){
+              alert('请输入书签名称')
+              return
+            }
+            const url = window.location.href
+            addBookmark(name, url)
+            document.getElementById('bookmark-name').value = ''
+            alert('书签已添加')
+          })
+        }
+
+        const refreshBookmarkBtn = document.getElementById('refresh-bookmark')
+        if(refreshBookmarkBtn){
+          refreshBookmarkBtn.addEventListener('click', refreshBookmarkList)
+        }
+
+        const syncDataBtn = document.getElementById('sync-data-btn')
+        if(syncDataBtn){
+          syncDataBtn.addEventListener('click', syncData)
+        }
+      }
+
+      // 初始化事件绑定
+      function rebindEvents(){
+        bindTopBarEvents()
+        bindModalEvents()
+      }
+
+      // 初始化页面
+      rebindEvents()
+    })();
   </script>
 </body>
 </html>
